@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GARAGE - Venta de Artículos Vintage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+        body { font-family: 'Courier Prime', monospace; }
+        .vintage-shadow { box-shadow: 4px 4px 0px rgba(0,0,0,0.8); }
+        .price-tag { transform: rotate(-2deg); }
+    </style>
+</head>
+<body class="bg-amber-50">
+    <!-- Header -->
+    <header class="bg-amber-900 text-amber-50 py-6 border-b-4 border-black">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl font-bold text-center tracking-wider">🏚️ GARAGE</h1>
+            <p class="text-center mt-2 text-amber-200">Tesoros Vintage & Antigüedades</p>
+        </div>
+    </header>
+
+    <!-- Categories -->
+    <nav class="bg-amber-100 border-b-4 border-black py-4 sticky top-0 z-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="filterCategory('all')" class="category-btn bg-amber-900 text-amber-50 px-6 py-2 border-2 border-black vintage-shadow hover:bg-amber-800 transition">TODO</button>
+                <button onclick="filterCategory('antiguedades')" class="category-btn bg-amber-50 px-6 py-2 border-2 border-black vintage-shadow hover:bg-amber-200 transition">Antigüedades</button>
+                <button onclick="filterCategory('electronicos')" class="category-btn bg-amber-50 px-6 py-2 border-2 border-black vintage-shadow hover:bg-amber-200 transition">Electrónicos</button>
+                <button onclick="filterCategory('electrodomesticos')" class="category-btn bg-amber-50 px-6 py-2 border-2 border-black vintage-shadow hover:bg-amber-200 transition">Electrodomésticos</button>
+                <button onclick="filterCategory('vintage')" class="category-btn bg-amber-50 px-6 py-2 border-2 border-black vintage-shadow hover:bg-amber-200 transition">Vintage</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Products Grid -->
+    <main class="container mx-auto px-4 py-12">
+        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Products will be inserted here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-amber-50 py-8 border-t-4 border-black mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-lg">© 2024 GARAGE - Encuentra tu tesoro vintage</p>
+            <p class="text-amber-300 mt-2">Cada artículo cuenta una historia</p>
+        </div>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, name: 'Radio Vintage Philips', category: 'antiguedades', price: 4500, image: '📻', condition: 'Excelente' },
+            { id: 2, name: 'Máquina de Escribir Olivetti', category: 'antiguedades', price: 8900, image: '⌨️', condition: 'Bueno' },
+            { id: 3, name: 'Teléfono Rotatorio', category: 'antiguedades', price: 2300, image: '☎️', condition: 'Funcional' },
+            { id: 4, name: 'Cámara Polaroid 600', category: 'electronicos', price: 6700, image: '📷', condition: 'Muy Bueno' },
+            { id: 5, name: 'Walkman Sony', category: 'electronicos', price: 3400, image: '📼', condition: 'Funcional' },
+            { id: 6, name: 'Game Boy Color', category: 'electronicos', price: 5600, image: '🎮', condition: 'Excelente' },
+            { id: 7, name: 'Tocadiscos Technics', category: 'electronicos', price: 12000, image: '💿', condition: 'Excelente' },
+            { id: 8, name: 'Licuadora Oster Clásica', category: 'electrodomesticos', price: 1800, image: '🥤', condition: 'Bueno' },
+            { id: 9, name: 'Tostadora Cromada', category: 'electrodomesticos', price: 1200, image: '🍞', condition: 'Funcional' },
+            { id: 10, name: 'Cafetera Percoladora', category: 'electrodomesticos', price: 2100, image: '☕', condition: 'Muy Bueno' },
+            { id: 11, name: 'Ventilador de Pedestal', category: 'electrodomesticos', price: 2800, image: '🌀', condition: 'Bueno' },
+            { id: 12, name: 'Maleta de Cuero', category: 'vintage', price: 3900, image: '🧳', condition: 'Vintage' },
+            { id: 13, name: 'Reloj de Pared Péndulo', category: 'vintage', price: 7500, image: '🕰️', condition: 'Excelente' },
+            { id: 14, name: 'Lámpara de Mesa Art Deco', category: 'vintage', price: 5200, image: '💡', condition: 'Muy Bueno' },
+            { id: 15, name: 'Espejo con Marco Dorado', category: 'vintage', price: 4100, image: '🪞', condition: 'Bueno' },
+            { id: 16, name: 'Proyector de Diapositivas', category: 'electronicos', price: 3700, image: '📽️', condition: 'Funcional' }
+        ];
+
+        function renderProducts(filteredProducts) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = filteredProducts.map(product => `
+                <div class="bg-white border-4 border-black vintage-shadow p-6 hover:translate-y-[-4px] transition-transform">
+                    <div class="text-7xl text-center mb-4">${product.image}</div>
+                    <h3 class="text-xl font-bold mb-2 text-amber-900">${product.name}</h3>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm bg-amber-100 px-3 py-1 border-2 border-black">${product.condition}</span>
+                        <span class="text-xs text-gray-600 uppercase">${product.category}</span>
+                    </div>
+                    <div class="price-tag bg-red-600 text-white text-2xl font-bold px-4 py-2 border-2 border-black inline-block">
+                        $${product.price.toLocaleString()}
+                    </div>
+                    <button class="w-full mt-4 bg-amber-900 text-amber-50 py-3 border-2 border-black hover:bg-amber-800 transition font-bold">
+                        COMPRAR
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(category) {
+            const filtered = category === 'all' ? products : products.filter(p => p.category === category);
+            renderProducts(filtered);
+            
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-900', 'text-amber-50');
+                btn.classList.add('bg-amber-50');
+            });
+            event.target.classList.add('bg-amber-900', 'text-amber-50');
+            event.target.classList.remove('bg-amber-50');
+        }
+
+        // Initial render
+        renderProducts(products);
+    </script>
+</body>
+</html>
